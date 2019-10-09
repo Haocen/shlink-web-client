@@ -50,10 +50,6 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
       return null;
     }
 
-    if (!this.state.orderDir) {
-      return null;
-    }
-
     let icon = null;
 
     switch (this.state.orderDir) {
