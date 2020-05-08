@@ -13,7 +13,7 @@ export const shortUrlsListParamsType = PropTypes.shape({
   orderBy: PropTypes.object,
 });
 
-const initialState = { page: '1' };
+const initialState = { page: '1', orderBy: { dateCreated: 'DESC' } };
 
 export default handleActions({
   [LIST_SHORT_URLS]: (state, { params }) => ({ ...state, ...params }),
