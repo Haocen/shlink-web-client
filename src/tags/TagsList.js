@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { splitEvery } from 'ramda';
 import PropTypes from 'prop-types';
 import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
+import { serverType } from '../servers/prop-types';
+import { MercureInfoType } from '../mercure/reducers/mercureInfo';
+import { useMercureTopicBinding } from '../mercure/helpers';
+import { TagsListType } from './reducers/tagsList';
 
 const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
@@ -10,19 +14,23 @@ const TAGS_GROUPS_AMOUNT = 4;
 const propTypes = {
   filterTags: PropTypes.func,
   forceListTags: PropTypes.func,
-  tagsList: PropTypes.shape({
-    loading: PropTypes.bool,
-    error: PropTypes.bool,
-    filteredTags: PropTypes.arrayOf(PropTypes.string),
-  }),
-  match: PropTypes.object,
+  tagsList: TagsListType,
+  selectedServer: serverType,
+  createNewVisit: PropTypes.func,
+  loadMercureInfo: PropTypes.func,
+  mercureInfo: MercureInfoType,
 };
 
 const TagsList = (TagCard) => {
-  const TagListComp = ({ filterTags, forceListTags, tagsList, match }) => {
+  const TagListComp = (
+    { filterTags, forceListTags, tagsList, selectedServer, createNewVisit, loadMercureInfo, mercureInfo }
+  ) => {
+    const [ displayedTag, setDisplayedTag ] = useState();
+
     useEffect(() => {
       forceListTags();
     }, []);
+    useMercureTopicBinding(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo);
 
     const renderContent = () => {
       if (tagsList.loading) {
@@ -53,7 +61,10 @@ const TagsList = (TagCard) => {
                 <TagCard
                   key={tag}
                   tag={tag}
-                  currentServerId={match.params.serverId}
+                  tagStats={tagsList.stats[tag]}
+                  selectedServer={selectedServer}
+                  displayed={displayedTag === tag}
+                  toggle={() => setDisplayedTag(displayedTag !== tag ? tag : undefined)}
                 />
               ))}
             </div>

@@ -11,17 +11,17 @@ import { TAG_EDITED } from '../../../src/tags/reducers/tagEdit';
 describe('tagsListReducer', () => {
   describe('reducer', () => {
     it('returns loading on LIST_TAGS_START', () => {
-      expect(reducer({}, { type: LIST_TAGS_START })).toEqual({
+      expect(reducer({}, { type: LIST_TAGS_START })).toEqual(expect.objectContaining({
         loading: true,
         error: false,
-      });
+      }));
     });
 
     it('returns error on LIST_TAGS_ERROR', () => {
-      expect(reducer({}, { type: LIST_TAGS_ERROR })).toEqual({
+      expect(reducer({}, { type: LIST_TAGS_ERROR })).toEqual(expect.objectContaining({
         loading: false,
         error: true,
-      });
+      }));
     });
 
     it('returns provided tags as filtered and regular tags on LIST_TAGS', () => {
@@ -103,7 +103,7 @@ describe('tagsListReducer', () => {
     it('dispatches loaded lists when no error occurs', async () => {
       const tags = [ 'foo', 'bar', 'baz' ];
 
-      listTagsMock.mockResolvedValue(tags);
+      listTagsMock.mockResolvedValue({ tags, stats: [] });
       buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
 
       await listTags(buildShlinkApiClient, true)()(dispatch, getState);
@@ -112,7 +112,7 @@ describe('tagsListReducer', () => {
       expect(getState).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_TAGS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_TAGS, tags });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_TAGS, tags, stats: {} });
     });
 
     const assertErrorResult = async () => {

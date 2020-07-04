@@ -1,11 +1,11 @@
 # shlink-web-client
 
 [![Build Status](https://img.shields.io/travis/shlinkio/shlink-web-client.svg?style=flat-square)](https://travis-ci.org/shlinkio/shlink-web-client)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/shlinkio/shlink-web-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/shlinkio/shlink-web-client/?branch=master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/shlinkio/shlink-web-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/shlinkio/shlink-web-client/?branch=master)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/shlinkio/shlink-web-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/shlinkio/shlink-web-client/)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/shlinkio/shlink-web-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/shlinkio/shlink-web-client/)
 [![GitHub release](https://img.shields.io/github/release/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/releases/latest)
 [![Docker pulls](https://img.shields.io/docker/pulls/shlinkio/shlink-web-client.svg?style=flat-square)](https://hub.docker.com/r/shlinkio/shlink-web-client/)
-[![GitHub license](https://img.shields.io/github/license/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/blob/main/LICENSE)
 [![Paypal Donate](https://img.shields.io/badge/Donate-paypal-blue.svg?style=flat-square&logo=paypal&colorA=cccccc)](https://slnk.to/donate)
 
 A ReactJS-based progressive web application for [Shlink](https://shlink.io).
@@ -67,6 +67,14 @@ Those servers can be exported and imported in other browsers, but if for some re
 If you are using the shlink-web-client docker image, you can mount the `servers.json` file in a volume inside `/usr/share/nginx/html`, which is the app's document root inside the container.
 
     docker run --name shlink-web-client -p 8000:80 -v ${PWD}/servers.json:/usr/share/nginx/html/servers.json shlinkio/shlink-web-client
+
+> **Be extremely careful when using this feature.**
+>
+> Due to shlink-web-client's client-side nature, the file needs to be accessible from the browser.
+>
+> Because of that, make sure you use this only when you self-host shlink-web-client, and you know only trusted people will have access to it.
+>
+> Failing to do this could cause your API keys to end up being exposed.
 
 ## Serve project in subpath
 

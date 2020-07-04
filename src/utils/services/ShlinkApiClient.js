@@ -36,6 +36,10 @@ export default class ShlinkApiClient {
     this._performRequest(`/short-urls/${shortCode}/visits`, 'GET', query)
       .then((resp) => resp.data.visits);
 
+  getTagVisits = (tag, query) =>
+    this._performRequest(`/tags/${tag}/visits`, 'GET', query)
+      .then((resp) => resp.data.visits);
+
   getShortUrl = (shortCode, domain) =>
     this._performRequest(`/short-urls/${shortCode}`, 'GET', { domain })
       .then((resp) => resp.data);
@@ -53,8 +57,9 @@ export default class ShlinkApiClient {
       .then(() => meta);
 
   listTags = () =>
-    this._performRequest('/tags', 'GET')
-      .then((resp) => resp.data.tags.data);
+    this._performRequest('/tags', 'GET', { withStats: 'true' })
+      .then((resp) => resp.data.tags)
+      .then(({ data, stats }) => ({ tags: data, stats }));
 
   deleteTags = (tags) =>
     this._performRequest('/tags', 'DELETE', { tags })

@@ -2,9 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
-import GraphCard from '../../src/visits/GraphCard';
+import DefaultChart from '../../../src/visits/helpers/DefaultChart';
 
-describe('<GraphCard />', () => {
+describe('<DefaultChart />', () => {
   let wrapper;
   const stats = {
     foo: 123,
@@ -14,16 +14,17 @@ describe('<GraphCard />', () => {
   afterEach(() => wrapper && wrapper.unmount());
 
   it('renders Doughnut when is not a bar chart', () => {
-    wrapper = shallow(<GraphCard title="The chart" stats={stats} />);
+    wrapper = shallow(<DefaultChart title="The chart" stats={stats} />);
     const doughnut = wrapper.find(Doughnut);
     const horizontal = wrapper.find(HorizontalBar);
+    const cols = wrapper.find('.col-sm-12');
 
     expect(doughnut).toHaveLength(1);
     expect(horizontal).toHaveLength(0);
 
     const { labels, datasets } = doughnut.prop('data');
     const [{ title, data, backgroundColor, borderColor }] = datasets;
-    const { legend, scales } = doughnut.prop('options');
+    const { legend, legendCallback, scales } = doughnut.prop('options');
 
     expect(title).toEqual('The chart');
     expect(labels).toEqual(keys(stats));
@@ -43,24 +44,28 @@ describe('<GraphCard />', () => {
       '#463730',
     ]);
     expect(borderColor).toEqual('white');
-    expect(legend).toEqual({ position: 'right' });
+    expect(legend).toEqual({ display: false });
+    expect(typeof legendCallback).toEqual('function');
     expect(scales).toBeUndefined();
+    expect(cols).toHaveLength(2);
   });
 
   it('renders HorizontalBar when is not a bar chart', () => {
-    wrapper = shallow(<GraphCard isBarChart title="The chart" stats={stats} />);
+    wrapper = shallow(<DefaultChart isBarChart title="The chart" stats={stats} />);
     const doughnut = wrapper.find(Doughnut);
     const horizontal = wrapper.find(HorizontalBar);
+    const cols = wrapper.find('.col-sm-12');
 
     expect(doughnut).toHaveLength(0);
     expect(horizontal).toHaveLength(1);
 
     const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data');
-    const { legend, scales } = horizontal.prop('options');
+    const { legend, legendCallback, scales } = horizontal.prop('options');
 
     expect(backgroundColor).toEqual('rgba(70, 150, 229, 0.4)');
     expect(borderColor).toEqual('rgba(70, 150, 229, 1)');
     expect(legend).toEqual({ display: false });
+    expect(legendCallback).toEqual(false);
     expect(scales).toEqual({
       xAxes: [
         {
@@ -70,6 +75,7 @@ describe('<GraphCard />', () => {
       ],
       yAxes: [{ stacked: true }],
     });
+    expect(cols).toHaveLength(1);
   });
 
   it.each([
@@ -79,11 +85,12 @@ describe('<GraphCard />', () => {
     [{ bar: 20, foo: 13 }, [ 110, 436 ], [ 13, 20 ]],
     [ undefined, [ 123, 456 ], undefined ],
   ])('splits highlighted data from regular data', (highlightedStats, expectedData, expectedHighlightedData) => {
-    wrapper = shallow(<GraphCard isBarChart title="The chart" stats={stats} highlightedStats={highlightedStats} />);
+    wrapper = shallow(<DefaultChart isBarChart title="The chart" stats={stats} highlightedStats={highlightedStats} />);
     const horizontal = wrapper.find(HorizontalBar);
 
-    const { datasets: [{ data }, highlightedData ] } = horizontal.prop('data');
+    const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data');
 
+    expect(label).toEqual(highlightedStats ? 'Non-selected' : 'Visits');
     expect(data).toEqual(expectedData);
     expectedHighlightedData && expect(highlightedData.data).toEqual(expectedHighlightedData);
     !expectedHighlightedData && expect(highlightedData).toBeUndefined();

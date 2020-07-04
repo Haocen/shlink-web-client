@@ -18,7 +18,8 @@
     "test:ci": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=clover",
     "test:pretty": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=html",
     "mutate": "./node_modules/.bin/stryker run",
-    "mutate:ci": "npm run mutate -- --mutate=$MUTATION_FILES"
+    "mutate:ci": "npm run mutate -- --mutate=$MUTATION_FILES",
+    "check": "npm run test & npm run lint & wait"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
@@ -67,10 +68,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
-    "@stryker-mutator/core": "^2.1.0",
-    "@stryker-mutator/html-reporter": "^2.1.0",
-    "@stryker-mutator/javascript-mutator": "^2.1.0",
-    "@stryker-mutator/jest-runner": "^2.1.0",
+    "@stryker-mutator/core": "^3.2.4",
+    "@stryker-mutator/javascript-mutator": "^3.2.4",
+    "@stryker-mutator/jest-runner": "^3.2.4",
     "@svgr/webpack": "^4.3.3",
     "adm-zip": "^0.4.13",
     "autoprefixer": "^9.6.3",

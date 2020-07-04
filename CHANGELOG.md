@@ -4,7 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## 2.5.1 - 2020-06-06
+
+#### Added
+
+* *Nothing*
+
+#### Changed
+
+* [#254](https://github.com/shlinkio/shlink-web-client/issues/254) Reduced duplication on code to handle mercure topics binding.
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* [#276](https://github.com/shlinkio/shlink-web-client/issues/276) Fixed default grouping used for visits line chart, making it be dynamic depending on how old the short URL is.
+* [#280](https://github.com/shlinkio/shlink-web-client/issues/280) Fixed shlink-web-client version not being properly passed when building stable tags of the docker image.
+* [#269](https://github.com/shlinkio/shlink-web-client/issues/269) Fixed doughnut chart legends getting to big and hiding charts on mobile devices.
+
+
+## 2.5.0 - 2020-05-31
 
 #### Added
 
@@ -15,7 +40,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * If it works, it will setup the necessary `EventSource`s, dispatching redux actions when an event is pushed, which will in turn update the UI.
     * If it fails, it will assume it is either not configured or not supported by the Shlink version.
 
+* [#265](https://github.com/shlinkio/shlink-web-client/issues/265) Updated tags section to allow displaying number of short URLs using every tag and number of visits for all short URLs using the tag.
+
+    This will work only when using Shlink v2.2.0 or above. For previous versions, the tags page will continue behaving the same.
+
+* [#261](https://github.com/shlinkio/shlink-web-client/issues/261) Added new page to show visit stats by tag.
+
+    This new page will return a "not found" error when the server is lower than v2.2.0, as older versions do not support fetching stats by tag.
+
 * [#253](https://github.com/shlinkio/shlink-web-client/issues/253) Created new settings page that will be used to define customizations in the app.
+
+* [#149](https://github.com/shlinkio/shlink-web-client/issues/149) and [#198](https://github.com/shlinkio/shlink-web-client/issues/198) Added new line chart to visits and tags stats which displays amount of visits during selected time period, grouped by month, week, day or hour.
 
 #### Changed
 
